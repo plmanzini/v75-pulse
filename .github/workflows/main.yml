@@ -18,7 +18,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install "pandas<2.0.0" numpy==1.26.4 requests python-deriv-api
-          pip install https://github.com/twopirllc/pandas-ta/archive/refs/heads/main.zip
+          pip install https://github.com/twopirllc/pandas-ta/archive/master.zip
 
       - name: Run Agent
         env:
