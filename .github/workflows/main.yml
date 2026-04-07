@@ -18,7 +18,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install python-deriv-api pandas requests
-          pip install git+https://github.com/twopirllc/pandas-ta.git@development
+          pip install pandas_ta --no-deps
 
       - name: Run Agent
         env:
