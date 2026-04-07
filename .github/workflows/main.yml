@@ -11,17 +11,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
-      - name: Install Deps
-        run: pip install -r requirements.txt
-      - name: Run Agent
-        env:
-          DERIV_TOKEN: ${{ secrets.DERIV_TOKEN }}
-        run: python agent.py
-      - name: Commit Data
+          python-version: '3.9
+ - name: Install Deps
         run: |
-          git config --global user.name 'V75-Agent'
-          git config --global user.email 'agent@bot.com'
-          git add data.json history.json
-          git commit -m "Update" || exit 0
-          git push
+          pip install -r requirements.txt
+          pip install git+https://github.com/twopirllc/pandas-ta.git@development
