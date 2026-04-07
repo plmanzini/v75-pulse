@@ -1,0 +1,27 @@
+name: V75 Pulse Heartbeat
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install Deps
+        run: pip install -r requirements.txt
+      - name: Run Agent
+        env:
+          DERIV_TOKEN: ${{ secrets.DERIV_TOKEN }}
+        run: python agent.py
+      - name: Commit Data
+        run: |
+          git config --global user.name 'V75-Agent'
+          git config --global user.email 'agent@bot.com'
+          git add data.json history.json
+          git commit -m "Update" || exit 0
+          git push
