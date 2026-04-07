@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V75 Pulse Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glow-green { text-shadow: 0 0 10px #22c55e; }
+        .live-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    </style>
+</head>
+<body class="bg-slate-950 text-white p-6">
+    <div class="max-w-md mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-xl font-bold">V75 <span class="text-blue-500">PULSE</span></h1>
+            <div class="flex items-center bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+                <div class="w-2 h-2 bg-green-500 rounded-full live-pulse mr-2"></div>
+                <span class="text-[10px] font-mono">LIVE</span>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-4">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-slate-400 text-xs uppercase">Action</span>
+                <span id="signal-text" class="text-2xl font-black text-yellow-500">WAITING</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
+                <div class="bg-slate-950 p-2 rounded">SL: <span id="sl">---</span></div>
+                <div class="bg-blue-600/20 p-2 rounded border border-blue-500/50 text-blue-400">ENTRY: <span id="entry">---</span></div>
+                <div class="bg-slate-950 p-2 rounded text-green-500">TP: <span id="tp">---</span></div>
+            </div>
+        </div>
+
+        <a href="https://app.deriv.com/mt5" target="_blank" class="block w-full bg-blue-600 text-center font-bold py-4 rounded-xl shadow-lg shadow-blue-900/20 mb-8">OPEN TERMINAL</a>
+
+        <div id="log" class="space-y-2 opacity-50 text-[10px] uppercase tracking-widest">
+            <p>Recent History Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        async function load() {
+            const res = await fetch('data.json');
+            const d = await res.json();
+            document.getElementById('signal-text').innerText = d.signal;
+            document.getElementById('entry').innerText = d.target_entry;
+            document.getElementById('sl').innerText = d.stop_loss;
+        }
+        setInterval(load, 30000);
+        load();
+    </script>
+</body>
+</html>
