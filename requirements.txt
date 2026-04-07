@@ -1,4 +1,4 @@
 python-deriv-api
-pandas
-pandas-ta
+pandas==2.0.3
+pandas_ta
 requests
