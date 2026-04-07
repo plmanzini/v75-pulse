@@ -6,11 +6,13 @@ on:
 jobs:
   update-dashboard:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -26,7 +28,7 @@ jobs:
         run: python agent.py
 
       - name: Commit Data
-        run: | |
+        run: |
           git config --global user.name 'V75-Agent'
           git config --global user.email 'agent@bot.com'
           git add data.json history.json
