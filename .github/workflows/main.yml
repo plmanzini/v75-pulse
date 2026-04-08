@@ -11,10 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Configure git authentication
-        run: |
-          git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
-      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -24,7 +20,6 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install pandas==2.2.2 numpy==1.26.4 requests python-deriv-api
-          pip install git+https://github.com/twopirllc/pandas-ta.git@main
 
       - name: Run Agent
         env:
