@@ -1,27 +1,36 @@
-name: V75 Pulse Update
+name: V75 Pulse Heartbeat
 on:
   schedule:
-    - cron: '*/15 * * * *' # Runs every 15 minutes
-  workflow_dispatch: # Allows you to run it manually
-
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
 jobs:
-  build:
+  update-dashboard:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      
       - name: Set up Python
-        uses: actions/setup-python@v2
-      - name: Install Dependencies
-        run: pip install deriv-api pandas_ta
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Deps
+        run: |
+          pip install --upgrade pip
+          pip install pandas==2.2.2 numpy==1.26.4 requests python-deriv-api
+          pip install pandas-ta --no-deps
+
       - name: Run Agent
         env:
           DERIV_TOKEN: ${{ secrets.DERIV_TOKEN }}
         run: python agent.py
-      - name: Commit and Push Data
+
+      - name: Commit Data
         run: |
           git config --global user.name 'V75-Agent'
           git config --global user.email 'agent@bot.com'
-          git add data.json
-          git commit -m "Automated Pulse Update"
+          git add data.json history.json
+          git commit -m "Update Dashboard Data" || exit 0
           git push
